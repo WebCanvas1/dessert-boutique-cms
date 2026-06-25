@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { business, features, hero, logo, menuCategories, products, testimonials, whatsappUrl } from "@/content/site";
-import { ProductCard } from "@/components/ProductCard";
+import { business, features, hero, logo, testimonials, whatsappUrl } from "@/content/site";
+import { MenuSection } from "@/components/MenuSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
