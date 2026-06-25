@@ -88,6 +88,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#cfe7d6" },
+      { property: "og:title", content: "Dessert Addiction — Brownies, Cheesecake Cups & Cookies" },
+      { name: "twitter:title", content: "Dessert Addiction — Brownies, Cheesecake Cups & Cookies" },
+      { property: "og:description", content: "Handcrafted brownies, cheesecake cups, cookies and custom dessert trays. Freshly baked, gift-ready, perfect for parties and events." },
+      { name: "twitter:description", content: "Handcrafted brownies, cheesecake cups, cookies and custom dessert trays. Freshly baked, gift-ready, perfect for parties and events." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3669af54-2c4b-4d50-b928-721ce00404ba/id-preview-4a60a306--27302b9f-dd85-4f0c-bdeb-d84417d46476.lovable.app-1782305551224.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3669af54-2c4b-4d50-b928-721ce00404ba/id-preview-4a60a306--27302b9f-dd85-4f0c-bdeb-d84417d46476.lovable.app-1782305551224.png" },
     ],
     links: [
       {
