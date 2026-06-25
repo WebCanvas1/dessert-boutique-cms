@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { business, features, hero, logo, menuCategories, products, testimonials, whatsappUrl } from "@/content/site";
-import { ProductCard } from "@/components/ProductCard";
+import { business, features, hero, logo, testimonials, whatsappUrl } from "@/content/site";
+import { MenuSection } from "@/components/MenuSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -44,32 +44,8 @@ function Index() {
         </div>
       </section>
 
-      {/* FULL MENU GROUPED BY CATEGORY */}
-      <section id="menu" className="mx-auto max-w-6xl px-4 sm:px-6 pt-6 pb-16 scroll-mt-24">
-        <div className="text-center mb-10">
-          <p className="script text-3xl text-chocolate-soft">our full menu</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-chocolate">Every dessert, freshly made to order</h2>
-          <p className="mt-3 text-chocolate-soft max-w-2xl mx-auto">Browse the full menu below — enquire by email or start a quick WhatsApp chat to confirm flavours, quantities and delivery.</p>
-        </div>
-
-        <div className="space-y-14">
-          {menuCategories.map((cat) => {
-            const items = products.filter((p) => p.category === cat);
-            if (items.length === 0) return null;
-            return (
-              <div key={cat}>
-                <div className="flex items-end justify-between gap-4 mb-5">
-                  <h3 className="font-display text-2xl sm:text-3xl text-chocolate">{cat}</h3>
-                  <span className="text-sm text-muted-foreground">{items.length} item{items.length === 1 ? "" : "s"}</span>
-                </div>
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {items.map((p) => <ProductCard key={p.id} p={p} />)}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      {/* MENU */}
+      <MenuSection id="menu" heading="h2" />
 
       {/* WHY CHOOSE US */}
       <section className="bg-muted py-16">
