@@ -35,7 +35,8 @@ export const business = {
   hours: "Tue – Sun · 10:00 AM – 8:00 PM (Closed Mondays)",
   // Admin: change this to the real WhatsApp number in international format (no +, no spaces).
   whatsappNumber: "15551234567",
-  whatsappMessage: "Hi Dessert Addiction, I'd like to enquire about your desserts.",
+  whatsappMessage:
+    "Hi Dessert Addiction Brownies & Desserts! I'd love to place an order. Could you please help me?",
   // Admin: paste your Web3Forms access key here.
   web3formsKey: "YOUR_WEB3FORMS_ACCESS_KEY",
   social: {
@@ -49,35 +50,47 @@ export const business = {
 export const whatsappUrl = (message = business.whatsappMessage) =>
   `https://wa.me/${business.whatsappNumber}?text=${encodeURIComponent(message)}`;
 
+export const emailEnquiryUrl = (product?: { name: string; price: string }) => {
+  const subject = product
+    ? `Enquiry: ${product.name}`
+    : "Dessert enquiry";
+  const body = product
+    ? `Hi Dessert Addiction,\n\nI'd like to enquire about: ${product.name} (${product.price}).\n\nPreferred date:\nQuantity / flavours:\n\nThank you!`
+    : `Hi Dessert Addiction,\n\nI'd like to enquire about your desserts.\n\nThank you!`;
+  return `mailto:${business.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+
 export type Product = {
   id: string;
   name: string;
   description: string;
   price: string;
-  category: "Dessert Cups" | "Brownies" | "Dessert Trays" | "Cookies" | "Custom Orders";
+  category: "Brownies" | "Dessert Cups" | "Loaded Desserts" | "Gift Boxes" | "Specials";
   image: string;
   available: boolean;
 };
 
 export const products: Product[] = [
+  { id: "triple-brownie", name: "Triple Chocolate Brownie Tray", description: "Fudgy brownie loaded with dark, milk & white chocolate chunks.", price: "Small $30 · Medium $35 · Large $40", category: "Brownies", image: browniesImg, available: true },
+  { id: "dubai-brownie", name: "Dubai Chocolate Brownie Tray", description: "Pistachio cream, crispy kataifi and chocolate — the viral favourite.", price: "Small $35 · Medium $45 · Large $55", category: "Brownies", image: dubaiImg, available: true },
+
   { id: "oreo", name: "Oreo Cheesecake Cup", description: "Crushed Oreos layered with silky vanilla cheesecake and chocolate crumble.", price: "$45 per dozen", category: "Dessert Cups", image: oreoImg, available: true },
   { id: "jelly", name: "Jelly & Custard Cup", description: "Wobbly strawberry jelly under rich vanilla custard and fresh whipped cream.", price: "$30 per dozen", category: "Dessert Cups", image: jellyImg, available: true },
   { id: "biscoff", name: "Biscoff Cheesecake Cup", description: "Buttery Biscoff base, vanilla cheesecake, and warm caramel drizzle.", price: "$45 per dozen", category: "Dessert Cups", image: biscoffImg, available: true },
   { id: "tiramisu-cup", name: "Tiramisu Cup", description: "Espresso-soaked ladyfingers with mascarpone cream and cocoa dust.", price: "$45 per dozen", category: "Dessert Cups", image: tiramisuImg, available: true },
-  { id: "mixed", name: "Mixed Dessert Cups", description: "An assortment of our most-loved cup flavours in one box.", price: "$55 per dozen", category: "Dessert Cups", image: mixedImg, available: true },
 
-  { id: "triple-brownie", name: "Triple Chocolate Brownie Tray", description: "Fudgy brownie loaded with dark, milk & white chocolate chunks.", price: "Small $30 · Medium $35 · Large $40", category: "Brownies", image: browniesImg, available: true },
-  { id: "dubai-brownie", name: "Dubai Chocolate Brownie Tray", description: "Pistachio cream, crispy kataifi and chocolate — the viral favourite.", price: "Small $35 · Medium $45 · Large $55", category: "Brownies", image: dubaiImg, available: true },
+  { id: "tiramisu-tray", name: "Tiramisu Tray", description: "Classic Italian tiramisu, made-to-order in three sizes.", price: "Small $30 · Medium $35 · Large $40", category: "Loaded Desserts", image: tiramisuImg, available: true },
+  { id: "triple-cookie", name: "Triple Chocolate Fudge Cookies", description: "Thick, chewy, loaded with three types of chocolate.", price: "$30 per dozen", category: "Loaded Desserts", image: tripleCookiesImg, available: true },
 
-  { id: "tiramisu-tray", name: "Tiramisu Tray", description: "Classic Italian tiramisu, made-to-order in three sizes.", price: "Small $30 · Medium $35 · Large $40", category: "Dessert Trays", image: tiramisuImg, available: true },
-  { id: "custom-tray", name: "Custom Dessert Tray", description: "Build your own tray — mix brownies, cups and cookies for any occasion.", price: "From $40", category: "Dessert Trays", image: customTrayImg, available: true },
+  { id: "mixed", name: "Mixed Dessert Cup Box", description: "An assortment of our most-loved cup flavours, gift-ready in one box.", price: "$55 per dozen", category: "Gift Boxes", image: mixedImg, available: true },
+  { id: "custom-tray", name: "Custom Dessert Tray", description: "Build your own tray — mix brownies, cups and cookies for any occasion.", price: "From $40", category: "Gift Boxes", image: customTrayImg, available: true },
 
-  { id: "triple-cookie", name: "Triple Chocolate Fudge Cookies", description: "Thick, chewy, loaded with three types of chocolate.", price: "$30 per dozen", category: "Cookies", image: tripleCookiesImg, available: true },
-  { id: "choc-chip", name: "Chocolate Chip Cookies", description: "Golden edges, gooey centre, classic chocolate chip done right.", price: "$25 per dozen", category: "Cookies", image: cookiesImg, available: true },
-  { id: "custom-cookie", name: "Custom Cookies", description: "Tell us your dream flavour and we'll bake it.", price: "From $30 per dozen", category: "Custom Orders", image: cookiesImg, available: true },
+  { id: "choc-chip", name: "Chocolate Chip Cookies", description: "Golden edges, gooey centre, classic chocolate chip done right.", price: "$25 per dozen", category: "Specials", image: cookiesImg, available: true },
+  { id: "custom-cookie", name: "Custom Cookies", description: "Tell us your dream flavour and we'll bake it.", price: "From $30 per dozen", category: "Specials", image: cookiesImg, available: true },
 ];
 
-export const categories = ["All", "Dessert Cups", "Brownies", "Dessert Trays", "Cookies", "Custom Orders"] as const;
+export const categories = ["All", "Brownies", "Dessert Cups", "Loaded Desserts", "Gift Boxes", "Specials"] as const;
+export const menuCategories = ["Brownies", "Dessert Cups", "Loaded Desserts", "Gift Boxes", "Specials"] as const;
 
 export const features = [
   { title: "Freshly Made", text: "Every order is baked the day it's delivered — never frozen, never pre-made." },
