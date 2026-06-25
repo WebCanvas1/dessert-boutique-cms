@@ -6,19 +6,19 @@ import { business, logo, whatsappUrl } from "@/content/site";
 const links = [
   { to: "/", label: "Home" },
   { to: "/menu", label: "Menu" },
-  { to: "/gallery", label: "Gallery" },
   { to: "/about", label: "About" },
-  { to: "/faq", label: "FAQ" },
+  { to: "/gallery", label: "Gallery" },
+  { to: "/reviews", label: "Reviews" },
   { to: "/contact", label: "Contact" },
 ] as const;
 
 export function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-40 backdrop-blur bg-[color-mix(in_oklab,var(--mint)_85%,transparent)] border-b border-border">
+    <header className="sticky top-0 z-40 backdrop-blur bg-[color-mix(in_oklab,var(--background)_88%,transparent)] border-b border-border">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3 grid grid-cols-[auto_1fr_auto] items-center gap-4">
         <Link to="/" className="flex items-center gap-3 min-w-0">
-          <img src={logo} alt={business.fullName} className="h-12 w-12 rounded-full object-cover ring-2 ring-pink shrink-0" />
+          <img src={logo} alt={business.fullName} className="h-12 w-12 rounded-full object-contain bg-cream ring-2 ring-pink shrink-0" />
           <div className="hidden sm:block min-w-0">
             <div className="font-display text-lg leading-tight text-chocolate truncate">{business.name}</div>
             <div className="text-xs text-muted-foreground truncate">Brownies & Desserts</div>
@@ -41,7 +41,7 @@ export function Header() {
             href={whatsappUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center rounded-full bg-pink text-white px-4 py-2 text-sm font-semibold shadow-pink hover:opacity-90 transition"
+            className="hidden sm:inline-flex items-center rounded-full bg-chocolate-soft text-cream px-4 py-2 text-sm font-semibold shadow-soft hover:bg-chocolate transition"
           >
             Order Now
           </a>
@@ -55,7 +55,7 @@ export function Header() {
         </div>
       </div>
       {open && (
-        <div className="md:hidden border-t border-border bg-mint">
+        <div className="md:hidden border-t border-border bg-background">
           <nav className="mx-auto max-w-6xl px-4 py-3 flex flex-col gap-1">
             {links.map((l) => (
               <Link
@@ -72,9 +72,9 @@ export function Header() {
               href={whatsappUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 inline-flex justify-center items-center rounded-full bg-pink text-white px-4 py-3 font-semibold"
+              className="mt-2 inline-flex justify-center items-center rounded-full bg-chocolate-soft text-cream px-4 py-3 font-semibold"
             >
-              Order on WhatsApp
+              Order Now on WhatsApp
             </a>
           </nav>
         </div>

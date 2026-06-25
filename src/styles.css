@@ -68,35 +68,37 @@
 
 :root {
   --radius: 1rem;
-  /* Brand palette */
-  --mint: oklch(0.92 0.04 165);          /* soft pastel mint background */
-  --mint-deep: oklch(0.82 0.06 165);     /* deeper mint accent */
-  --pink: oklch(0.78 0.13 5);            /* elegant pink */
-  --pink-soft: oklch(0.93 0.05 5);       /* blush */
-  --chocolate: oklch(0.28 0.05 50);      /* #3B2418-ish chocolate brown */
-  --chocolate-soft: oklch(0.42 0.06 50);
-  --cream: oklch(0.985 0.015 90);
-  --whatsapp: oklch(0.66 0.16 145);
+  /* Brand palette — premium boutique dessert
+   * Warm cream background · blush alt sections · white cards
+   * Chocolate brown primary buttons · soft pastel pink accent. */
+  --mint: #FFF8F3;            /* legacy token name, now warm cream bg */
+  --mint-deep: #FFF0F5;       /* legacy token name, now blush alt section */
+  --pink: #F7B7C8;            /* soft pastel pink accent */
+  --pink-soft: #FFE4EC;       /* very light blush */
+  --chocolate: #3E2723;       /* dark chocolate — body/heading text */
+  --chocolate-soft: #5B3424;  /* primary chocolate button */
+  --cream: #FFFFFF;           /* card surface — white */
+  --whatsapp: #25D366;
 
-  --background: var(--mint);
+  --background: #FFF8F3;
   --foreground: var(--chocolate);
   --card: var(--cream);
   --card-foreground: var(--chocolate);
   --popover: var(--cream);
   --popover-foreground: var(--chocolate);
-  --primary: var(--pink);
-  --primary-foreground: oklch(1 0 0);
+  --primary: var(--chocolate-soft);
+  --primary-foreground: #FFFFFF;
   --secondary: var(--chocolate);
   --secondary-foreground: var(--cream);
-  --muted: oklch(0.96 0.02 165);
-  --muted-foreground: oklch(0.45 0.04 50);
+  --muted: #FFF0F5;
+  --muted-foreground: #8A6F66;
   --accent: var(--pink-soft);
   --accent-foreground: var(--chocolate);
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(1 0 0);
-  --border: color-mix(in oklab, var(--chocolate) 14%, transparent);
-  --input: color-mix(in oklab, var(--chocolate) 18%, transparent);
-  --ring: var(--pink);
+  --border: color-mix(in oklab, var(--chocolate) 10%, transparent);
+  --input: color-mix(in oklab, var(--chocolate) 16%, transparent);
+  --ring: var(--chocolate-soft);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);

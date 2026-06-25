@@ -87,7 +87,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: business.fullName },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "theme-color", content: "#cfe7d6" },
+      { name: "theme-color", content: "#FFF8F3" },
       { property: "og:title", content: "Dessert Addiction — Brownies, Cheesecake Cups & Cookies" },
       { name: "twitter:title", content: "Dessert Addiction — Brownies, Cheesecake Cups & Cookies" },
       { property: "og:description", content: "Handcrafted brownies, cheesecake cups, cookies and custom dessert trays. Freshly baked, gift-ready, perfect for parties and events." },
