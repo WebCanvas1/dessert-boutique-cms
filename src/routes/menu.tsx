@@ -23,7 +23,7 @@ function MenuPage() {
   const filtered = cat === "All" ? products : products.filter((p) => p.category === cat);
   return (
     <>
-      <PageHeader eyebrow="our menu" title="Every dessert, freshly made" subtitle="Filter by category, then tap any item to order directly on WhatsApp." />
+      <PageHeader eyebrow="our menu" title="Every dessert, freshly made" subtitle="Filter by category, then enquire by email or message us on WhatsApp." />
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-wrap justify-center gap-2 mb-10">
           {categories.map((c) => (

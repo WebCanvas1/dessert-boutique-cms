@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as PoliciesRouteImport } from './routes/policies'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as GalleryRouteImport } from './routes/gallery'
@@ -21,6 +22,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PoliciesRoute = PoliciesRouteImport.update({
@@ -67,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/gallery': typeof GalleryRoute
   '/menu': typeof MenuRoute
   '/policies': typeof PoliciesRoute
+  '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesByTo {
@@ -77,6 +84,7 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/menu': typeof MenuRoute
   '/policies': typeof PoliciesRoute
+  '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesById {
@@ -88,6 +96,7 @@ export interface FileRoutesById {
   '/gallery': typeof GalleryRoute
   '/menu': typeof MenuRoute
   '/policies': typeof PoliciesRoute
+  '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/menu'
     | '/policies'
+    | '/reviews'
     | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -110,6 +120,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/menu'
     | '/policies'
+    | '/reviews'
     | '/sitemap.xml'
   id:
     | '__root__'
@@ -120,6 +131,7 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/menu'
     | '/policies'
+    | '/reviews'
     | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
@@ -131,6 +143,7 @@ export interface RootRouteChildren {
   GalleryRoute: typeof GalleryRoute
   MenuRoute: typeof MenuRoute
   PoliciesRoute: typeof PoliciesRoute
+  ReviewsRoute: typeof ReviewsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -141,6 +154,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/policies': {
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalleryRoute: GalleryRoute,
   MenuRoute: MenuRoute,
   PoliciesRoute: PoliciesRoute,
+  ReviewsRoute: ReviewsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
