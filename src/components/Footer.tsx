@@ -8,7 +8,7 @@ export function Footer() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-12 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3">
-            <img src={logo} alt={business.fullName} className="h-12 w-12 rounded-full ring-2 ring-pink" />
+            <img src={logo} alt={business.fullName} className="h-12 w-12 rounded-full object-contain bg-cream ring-2 ring-pink" />
             <div>
               <div className="font-display text-xl">{business.name}</div>
               <div className="text-sm opacity-80">Brownies & Desserts</div>
