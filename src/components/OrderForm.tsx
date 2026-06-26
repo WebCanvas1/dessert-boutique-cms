@@ -25,7 +25,10 @@ export function OrderForm({
 }: Props) {
   const items = useOrderItems();
   const content = useSiteContent();
-  const products = content?.menu ?? [];
+
+  const products = (content?.menu ?? []).filter(
+    (p) => p && p.available !== false && p.name,
+  );
 
   const [submitting, setSubmitting] = useState(false);
   const [agreed, setAgreed] = useState(false);
@@ -231,20 +234,21 @@ export function OrderForm({
 
             <div className="grid gap-2">
               {items.map((it, idx) => (
-                <div key={idx} className="grid gap-2 sm:grid-cols-[1fr_110px_48px] items-center">
+                <div
+                  key={idx}
+                  className="grid gap-2 sm:grid-cols-[1fr_110px_48px] items-center"
+                >
                   <select
                     className={inputCls}
                     value={it.name}
                     onChange={(e) => updateItem(idx, { name: e.target.value })}
                   >
                     <option value="">Select product</option>
-                    {products
-                      .filter((p) => p.available !== false)
-                      .map((p) => (
-                        <option key={p.id} value={p.name}>
-                          {p.name}
-                        </option>
-                      ))}
+                    {products.map((p) => (
+                      <option key={p.id} value={p.name}>
+                        {p.name}
+                      </option>
+                    ))}
                   </select>
 
                   <input
