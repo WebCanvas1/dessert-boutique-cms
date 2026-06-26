@@ -31,7 +31,7 @@
   "r2_buckets": [
     {
       "binding": "SITE_IMAGES",
-      "bucket_name": "PASTE_YOUR_R2_BUCKET_NAME_HERE"
+      "bucket_name": "dessert-boutique-images"
     }
   ]
 
