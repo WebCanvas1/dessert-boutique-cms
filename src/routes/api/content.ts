@@ -10,20 +10,30 @@ export const Route = createFileRoute("/api/content")({
         const content = await readContent();
         return Response.json(content);
       },
+
       POST: async ({ request }) => {
         if (!(await isAdmin())) {
           return new Response("Unauthorized", { status: 401 });
         }
+
         let body: SiteContent;
+
         try {
           body = (await request.json()) as SiteContent;
         } catch {
           return new Response("Invalid JSON", { status: 400 });
         }
-        if (!body || typeof body !== "object" || !Array.isArray(body.menu)) {
+
+        if (!body || typeof body !== "object") {
           return new Response("Invalid content shape", { status: 400 });
         }
+
+        if (!Array.isArray((body as any).menuItems)) {
+          return new Response("Invalid menuItems shape", { status: 400 });
+        }
+
         await writeContent(body);
+
         return Response.json({ ok: true });
       },
     },
