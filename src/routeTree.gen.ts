@@ -18,6 +18,10 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiOrderRouteImport } from './routes/api/order'
+import { Route as ApiContentRouteImport } from './routes/api/content'
+import { Route as ApiAdminLogoutRouteImport } from './routes/api/admin.logout'
+import { Route as ApiAdminLoginRouteImport } from './routes/api/admin.login'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -64,6 +68,26 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiOrderRoute = ApiOrderRouteImport.update({
+  id: '/api/order',
+  path: '/api/order',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiContentRoute = ApiContentRouteImport.update({
+  id: '/api/content',
+  path: '/api/content',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminLogoutRoute = ApiAdminLogoutRouteImport.update({
+  id: '/api/admin/logout',
+  path: '/api/admin/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminLoginRoute = ApiAdminLoginRouteImport.update({
+  id: '/api/admin/login',
+  path: '/api/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -75,6 +99,10 @@ export interface FileRoutesByFullPath {
   '/policies': typeof PoliciesRoute
   '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/content': typeof ApiContentRoute
+  '/api/order': typeof ApiOrderRoute
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +114,10 @@ export interface FileRoutesByTo {
   '/policies': typeof PoliciesRoute
   '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/content': typeof ApiContentRoute
+  '/api/order': typeof ApiOrderRoute
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +130,10 @@ export interface FileRoutesById {
   '/policies': typeof PoliciesRoute
   '/reviews': typeof ReviewsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/api/content': typeof ApiContentRoute
+  '/api/order': typeof ApiOrderRoute
+  '/api/admin/login': typeof ApiAdminLoginRoute
+  '/api/admin/logout': typeof ApiAdminLogoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +147,10 @@ export interface FileRouteTypes {
     | '/policies'
     | '/reviews'
     | '/sitemap.xml'
+    | '/api/content'
+    | '/api/order'
+    | '/api/admin/login'
+    | '/api/admin/logout'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +162,10 @@ export interface FileRouteTypes {
     | '/policies'
     | '/reviews'
     | '/sitemap.xml'
+    | '/api/content'
+    | '/api/order'
+    | '/api/admin/login'
+    | '/api/admin/logout'
   id:
     | '__root__'
     | '/'
@@ -133,6 +177,10 @@ export interface FileRouteTypes {
     | '/policies'
     | '/reviews'
     | '/sitemap.xml'
+    | '/api/content'
+    | '/api/order'
+    | '/api/admin/login'
+    | '/api/admin/logout'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +193,10 @@ export interface RootRouteChildren {
   PoliciesRoute: typeof PoliciesRoute
   ReviewsRoute: typeof ReviewsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiContentRoute: typeof ApiContentRoute
+  ApiOrderRoute: typeof ApiOrderRoute
+  ApiAdminLoginRoute: typeof ApiAdminLoginRoute
+  ApiAdminLogoutRoute: typeof ApiAdminLogoutRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -212,6 +264,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/order': {
+      id: '/api/order'
+      path: '/api/order'
+      fullPath: '/api/order'
+      preLoaderRoute: typeof ApiOrderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/content': {
+      id: '/api/content'
+      path: '/api/content'
+      fullPath: '/api/content'
+      preLoaderRoute: typeof ApiContentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/logout': {
+      id: '/api/admin/logout'
+      path: '/api/admin/logout'
+      fullPath: '/api/admin/logout'
+      preLoaderRoute: typeof ApiAdminLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/login': {
+      id: '/api/admin/login'
+      path: '/api/admin/login'
+      fullPath: '/api/admin/login'
+      preLoaderRoute: typeof ApiAdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -225,6 +305,10 @@ const rootRouteChildren: RootRouteChildren = {
   PoliciesRoute: PoliciesRoute,
   ReviewsRoute: ReviewsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiContentRoute: ApiContentRoute,
+  ApiOrderRoute: ApiOrderRoute,
+  ApiAdminLoginRoute: ApiAdminLoginRoute,
+  ApiAdminLogoutRoute: ApiAdminLogoutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
