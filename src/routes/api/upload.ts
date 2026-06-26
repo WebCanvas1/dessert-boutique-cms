@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { getWebRequest } from "@tanstack/react-start/server";
 import { isAdmin } from "@/lib/admin-session.server";
 
 function json(data: unknown, status = 200) {
@@ -15,8 +14,7 @@ export const Route = createFileRoute("/api/upload")({
             return json({ ok: false, error: "Unauthorized" }, 401);
           }
 
-          const webRequest = getWebRequest();
-          const env = (webRequest as any)?.env;
+          const env = (globalThis as any).__CF_ENV__;
           const bucket = env?.SITE_IMAGES;
 
           if (!bucket) {
