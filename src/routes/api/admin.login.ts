@@ -10,8 +10,15 @@ export const Route = createFileRoute("/api/admin/login")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const expectedUser = process.env.ADMIN_USERNAME;
-        const expectedPass = process.env.ADMIN_PASSWORD;
+        const env = (globalThis as any).process?.env ?? {};
+
+const expectedUser =
+  env.ADMIN_USERNAME ||
+  (globalThis as any).ADMIN_USERNAME;
+
+const expectedPass =
+  env.ADMIN_PASSWORD ||
+  (globalThis as any).ADMIN_PASSWORD;
         if (!expectedUser || !expectedPass) {
           return Response.json(
             { ok: false, error: "Admin credentials not configured" },
