@@ -75,7 +75,7 @@ export function MenuSection({
         {filtered
           .filter((p: SiteProduct) => p.available !== false)
           .map((p: SiteProduct) => (
-            <ProductCard key={p.id} product={p as any} />
+            <ProductCard key={p.id} p={p as any} />
           ))}
       </div>
     </section>
