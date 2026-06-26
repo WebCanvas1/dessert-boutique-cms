@@ -427,11 +427,35 @@ function Fields<T extends Record<string, unknown>>({
               onChange={(e) => set(key, Number(e.target.value))}
             />
           ) : (
-            <input
-              className="mt-1 w-full rounded-xl border border-border bg-cream px-4 py-2"
-              value={String(obj[key] ?? "")}
-              onChange={(e) => set(key, e.target.value)}
-            />
+            <div className="grid gap-2">
+              <input
+                className="mt-1 w-full rounded-xl border border-border bg-cream px-4 py-2"
+                value={String(obj[key] ?? "")}
+                onChange={(e) => set(key, e.target.value)}
+              />
+
+              {(key === "logo" || key === "image") && (
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="text-sm"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    try {
+                      const url = await uploadImage(file);
+                      set(key, url);
+                      toast.success("Image uploaded. Click Save changes.");
+                    } catch (err) {
+                      toast.error(
+                        err instanceof Error ? err.message : "Upload failed",
+                      );
+                    }
+                  }}
+                />
+              )}
+            </div>
           )}
         </label>
       ))}
@@ -542,18 +566,47 @@ function ListEditor<T extends Record<string, unknown>>({
                 <span className="text-xs font-semibold text-chocolate">
                   {label}
                 </span>
-                <input
-                  type={kind === "number" ? "number" : "text"}
-                  className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2"
-                  value={String(item[k] ?? "")}
-                  onChange={(e) =>
-                    update(
-                      i,
-                      k,
-                      kind === "number" ? Number(e.target.value) : e.target.value,
-                    )
-                  }
-                />
+
+                <div className="grid gap-2">
+                  <input
+                    type={kind === "number" ? "number" : "text"}
+                    className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2"
+                    value={String(item[k] ?? "")}
+                    onChange={(e) =>
+                      update(
+                        i,
+                        k,
+                        kind === "number"
+                          ? Number(e.target.value)
+                          : e.target.value,
+                      )
+                    }
+                  />
+
+                  {(k === "image" || k === "src") && (
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="text-sm"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+
+                        try {
+                          const url = await uploadImage(file);
+                          update(i, k, url);
+                          toast.success("Image uploaded. Click Save changes.");
+                        } catch (err) {
+                          toast.error(
+                            err instanceof Error
+                              ? err.message
+                              : "Upload failed",
+                          );
+                        }
+                      }}
+                    />
+                  )}
+                </div>
               </label>
             ),
           )}
@@ -562,7 +615,6 @@ function ListEditor<T extends Record<string, unknown>>({
     </div>
   );
 }
-
 function MenuEditor({
   items,
   onChange,
@@ -597,7 +649,23 @@ function MenuEditor({
     />
   );
 }
+async function uploadImage(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
 
+  const res = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+
+  if (!res.ok || !data.url) {
+    throw new Error(data.error || "Image upload failed");
+  }
+
+  return data.url;
+}
 function IconBtn({
   children,
   onClick,
