@@ -15,6 +15,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { WhatsAppFloat } from "../components/WhatsAppFloat";
 import { business, logo } from "../content/site";
+import { Toaster } from "sonner";
 
 function NotFoundComponent() {
   return (
@@ -156,6 +157,7 @@ function RootComponent() {
         </main>
         <Footer />
         <WhatsAppFloat />
+        <Toaster position="top-center" richColors />
       </div>
     </QueryClientProvider>
   );

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { business, features, hero, logo, testimonials, whatsappUrl } from "@/content/site";
 import { MenuSection } from "@/components/MenuSection";
+import { OrderForm } from "@/components/OrderForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -46,6 +47,9 @@ function Index() {
 
       {/* MENU */}
       <MenuSection id="menu" heading="h2" />
+
+      {/* ORDER FORM */}
+      <OrderForm />
 
       {/* WHY CHOOSE US */}
       <section className="bg-muted py-16">

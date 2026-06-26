@@ -1,5 +1,6 @@
-import { Mail } from "lucide-react";
-import { emailEnquiryUrl, type Product } from "@/content/site";
+import { ShoppingBag } from "lucide-react";
+import { type Product } from "@/content/site";
+import { addOrderItem } from "@/lib/order-store";
 
 export function ProductCard({ p }: { p: Product }) {
   return (
@@ -21,13 +22,15 @@ export function ProductCard({ p }: { p: Product }) {
         </div>
         <p className="text-lg font-bold text-chocolate-soft">{p.price}</p>
         <p className="text-base text-chocolate-soft leading-relaxed">{p.description}</p>
-        <a
-          href={emailEnquiryUrl({ name: p.name, price: p.price })}
-          className="mt-auto inline-flex justify-center items-center gap-2 rounded-full bg-chocolate-soft text-cream px-4 py-3 font-semibold hover:bg-chocolate transition w-full"
+        <button
+          type="button"
+          onClick={() => addOrderItem(p.name)}
+          disabled={!p.available}
+          className="mt-auto inline-flex justify-center items-center gap-2 rounded-full bg-chocolate-soft text-cream px-4 py-3 font-semibold hover:bg-chocolate transition w-full disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <Mail size={16} />
-          Email Enquiry
-        </a>
+          <ShoppingBag size={16} />
+          Order
+        </button>
       </div>
     </article>
   );
