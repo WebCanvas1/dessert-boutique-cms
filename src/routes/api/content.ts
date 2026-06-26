@@ -28,9 +28,9 @@ export const Route = createFileRoute("/api/content")({
           return new Response("Invalid content shape", { status: 400 });
         }
 
-        if (!Array.isArray((body as any).menuItems)) {
-          return new Response("Invalid menuItems shape", { status: 400 });
-        }
+       if (!body || typeof body !== "object" || !Array.isArray((body as any).menu)) {
+  return new Response("Invalid content shape", { status: 400 });
+}
 
         await writeContent(body);
 
