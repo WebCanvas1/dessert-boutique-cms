@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -8,7 +8,7 @@ import {
   useOrderItems,
   type OrderItem,
 } from "@/lib/order-store";
-import { useSiteContent } from "@/hooks/useSiteContent";
+
 
 type Props = {
   heading?: string;
@@ -24,11 +24,19 @@ export function OrderForm({
   submitLabel = "Submit Order",
 }: Props) {
   const items = useOrderItems();
-  const content = useSiteContent();
+  const [products, setProducts] = useState<any[]>([]);
 
-  const products = (content?.menu ?? []).filter(
-    (p) => p && p.available !== false && p.name,
-  );
+useEffect(() => {
+  fetch("/api/content", { cache: "no-store" })
+    .then((res) => res.json())
+    .then((data) => {
+      const menu = (data?.menu ?? []).filter(
+        (p: any) => p && p.available !== false && p.name
+      );
+      setProducts(menu);
+    })
+    .catch((err) => console.error("Failed to load products", err));
+}, []);
 
   const [submitting, setSubmitting] = useState(false);
   const [agreed, setAgreed] = useState(false);
