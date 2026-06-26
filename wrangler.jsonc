@@ -1,0 +1,40 @@
+{
+  // Wrangler config for deploying this site to your own Cloudflare Workers account.
+  // Lovable's hosted preview/publish does NOT read this file — it only kicks in
+  // when you `wrangler deploy` from your own Cloudflare account.
+  "name": "dessert-addiction",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // KV — site content store
+  // 1. In your Cloudflare dashboard: Workers & Pages → KV → "Create namespace"
+  //    (name it e.g. "dessert-addiction-content").
+  // 2. Copy the generated namespace ID into the `id` field below.
+  // 3. Re-deploy. The admin "Save" button will persist content to KV.
+  // ──────────────────────────────────────────────────────────────────────────
+  "kv_namespaces": [
+    {
+      "binding": "SITE_CONTENT",
+      "id": "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
+    }
+  ],
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // R2 — uploaded images bucket
+  // 1. In your Cloudflare dashboard: R2 → "Create bucket"
+  //    (name it e.g. "dessert-addiction-images").
+  // 2. Put the bucket name in `bucket_name` below.
+  // 3. (Optional but recommended) enable a public r2.dev URL on the bucket,
+  //    or front it with a Worker route, so uploaded image URLs are reachable.
+  // ──────────────────────────────────────────────────────────────────────────
+  "r2_buckets": [
+    {
+      "binding": "SITE_IMAGES",
+      "bucket_name": "PASTE_YOUR_R2_BUCKET_NAME_HERE"
+    }
+  ]
+
+  // Required env vars (set with `wrangler secret put <NAME>` after deploy):
+  //   ADMIN_USERNAME, ADMIN_PASSWORD, SESSION_SECRET, ORDER_DESTINATION_EMAIL
+}
