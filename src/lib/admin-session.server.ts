@@ -4,7 +4,7 @@ import { createHash, timingSafeEqual } from "node:crypto";
 export type AdminSession = { isAdmin?: boolean };
 
 export const adminSessionConfig = {
-  password: process.env.SESSION_SECRET ?? "fallback-dev-secret-please-set-SESSION_SECRET-env",
+  password: "8f9c2a71b5e84f30a91d7e4f63b28a9c5e1f7d94a6b8c3d2",
   name: "da-admin",
   maxAge: 60 * 60 * 24 * 7,
   cookie: { httpOnly: true, secure: true, sameSite: "lax" as const, path: "/" },
