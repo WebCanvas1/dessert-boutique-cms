@@ -20,7 +20,7 @@ export function MenuSection({
       .catch((err) => console.error("Failed to load menu content", err));
   }, []);
 
-  const products = content?.menu ?? [];
+  const products = content?.menuItems ?? [];
 
   const categories = useMemo(() => {
     const unique = Array.from(
