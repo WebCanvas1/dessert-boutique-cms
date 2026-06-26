@@ -15,7 +15,7 @@
   // ──────────────────────────────────────────────────────────────────────────
   "kv_namespaces": [
     {
-      "binding": "dessert-boutique-content",
+      "binding": "SITE_CONTENT",
       "id": "dbf9a4dd81184342a74adc71f0324dfc"
     }
   ],
