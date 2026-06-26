@@ -10,13 +10,8 @@ export const Route = createFileRoute("/api/admin/login")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const env = (globalThis as any).process?.env ?? {};
-
-        const expectedUser =
-          env.ADMIN_USERNAME || (globalThis as any).ADMIN_USERNAME;
-
-        const expectedPass =
-          env.ADMIN_PASSWORD || (globalThis as any).ADMIN_PASSWORD;
+      const expectedUser = "webstarteradmin";
+const expectedPass = "WS@2026!Secure";
 
         if (!expectedUser || !expectedPass) {
           return Response.json(
