@@ -1,9 +1,6 @@
 import logoAsset from "@/assets/logo.jpg.asset.json";
 import heroImg from "@/assets/hero.jpg";
-import oreoImg from "@/assets/oreo-cheesecake.jpg";
 import jellyImg from "@/assets/jelly-custard.jpg";
-import biscoffImg from "@/assets/biscoff.jpg";
-import tiramisuImg from "@/assets/tiramisu.jpg";
 import mixedImg from "@/assets/mixed-cups.jpg";
 import browniesImg from "@/assets/brownies.jpg";
 import dubaiImg from "@/assets/dubai-brownies.jpg";
@@ -13,6 +10,9 @@ import customTrayImg from "@/assets/custom-tray.jpg";
 import gallery1 from "@/assets/gallery-1.jpg";
 import gallery2 from "@/assets/gallery-2.jpg";
 import gallery3 from "@/assets/gallery-3.jpg";
+import oreoImg from "@/assets/oreo.jpg";
+import biscoffImg from "@/assets/biscoff.png";
+import tiramisuImg from "@/assets/tira.jpg";
 
 /**
  * Central editable site content.
