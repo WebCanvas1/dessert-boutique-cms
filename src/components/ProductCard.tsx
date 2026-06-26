@@ -7,7 +7,7 @@ export function ProductCard({ p }: { p: Product }) {
     <article className="group rounded-3xl bg-card overflow-hidden shadow-soft border border-border flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgba(62,39,35,0.28)]">
       <div className="aspect-[4/3] overflow-hidden bg-muted">
         <img
-          src={p.image}
+          src={p.image || "/assets/hero-CorRaMlr.jpg"}
           alt={p.name}
           loading="lazy"
           className="h-full w-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
