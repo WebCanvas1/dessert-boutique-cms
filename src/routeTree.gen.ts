@@ -20,6 +20,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiOrderRouteImport } from './routes/api/order'
 import { Route as ApiContentRouteImport } from './routes/api/content'
+import { Route as ApiAdminStatusRouteImport } from './routes/api/admin.status'
 import { Route as ApiAdminLogoutRouteImport } from './routes/api/admin.logout'
 import { Route as ApiAdminLoginRouteImport } from './routes/api/admin.login'
 
@@ -78,6 +79,11 @@ const ApiContentRoute = ApiContentRouteImport.update({
   path: '/api/content',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminStatusRoute = ApiAdminStatusRouteImport.update({
+  id: '/api/admin/status',
+  path: '/api/admin/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAdminLogoutRoute = ApiAdminLogoutRouteImport.update({
   id: '/api/admin/logout',
   path: '/api/admin/logout',
@@ -103,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/api/order': typeof ApiOrderRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
   '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/status': typeof ApiAdminStatusRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/api/order': typeof ApiOrderRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
   '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/status': typeof ApiAdminStatusRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +142,7 @@ export interface FileRoutesById {
   '/api/order': typeof ApiOrderRoute
   '/api/admin/login': typeof ApiAdminLoginRoute
   '/api/admin/logout': typeof ApiAdminLogoutRoute
+  '/api/admin/status': typeof ApiAdminStatusRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/api/order'
     | '/api/admin/login'
     | '/api/admin/logout'
+    | '/api/admin/status'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -166,6 +176,7 @@ export interface FileRouteTypes {
     | '/api/order'
     | '/api/admin/login'
     | '/api/admin/logout'
+    | '/api/admin/status'
   id:
     | '__root__'
     | '/'
@@ -181,6 +192,7 @@ export interface FileRouteTypes {
     | '/api/order'
     | '/api/admin/login'
     | '/api/admin/logout'
+    | '/api/admin/status'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -197,6 +209,7 @@ export interface RootRouteChildren {
   ApiOrderRoute: typeof ApiOrderRoute
   ApiAdminLoginRoute: typeof ApiAdminLoginRoute
   ApiAdminLogoutRoute: typeof ApiAdminLogoutRoute
+  ApiAdminStatusRoute: typeof ApiAdminStatusRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiContentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/status': {
+      id: '/api/admin/status'
+      path: '/api/admin/status'
+      fullPath: '/api/admin/status'
+      preLoaderRoute: typeof ApiAdminStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/admin/logout': {
       id: '/api/admin/logout'
       path: '/api/admin/logout'
@@ -309,6 +329,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiOrderRoute: ApiOrderRoute,
   ApiAdminLoginRoute: ApiAdminLoginRoute,
   ApiAdminLogoutRoute: ApiAdminLogoutRoute,
+  ApiAdminStatusRoute: ApiAdminStatusRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
