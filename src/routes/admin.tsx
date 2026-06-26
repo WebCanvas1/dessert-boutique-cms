@@ -161,8 +161,13 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
       if (!res.ok) throw new Error("Save failed");
 
-      toast.success("Saved");
-      setDirty(false);
+const fresh = await fetch("/api/content", { cache: "no-store" }).then((r) =>
+  r.json(),
+);
+
+setContent(fresh);
+toast.success("Saved");
+setDirty(false);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Save failed");
     } finally {
