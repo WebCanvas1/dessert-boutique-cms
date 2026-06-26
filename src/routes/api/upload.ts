@@ -8,46 +8,19 @@ function json(data: unknown, status = 200) {
 export const Route = createFileRoute("/api/upload")({
   server: {
     handlers: {
-      POST: async ({ request, context }) => {
+      POST: async ({ request }) => {
         try {
           if (!(await isAdmin())) {
             return json({ ok: false, error: "Unauthorized" }, 401);
           }
 
-          const env =
-            (context as any)?.cloudflare?.env ||
-            (context as any)?.env ||
-            (context as any)?.platform?.env ||
-            (globalThis as any).__CF_ENV__;
-
-          const bucket = env?.SITE_IMAGES;
-
-          if (!bucket) {
-            return json({ ok: false, error: "R2 bucket SITE_IMAGES is not configured" }, 500);
-          }
-
-          const formData = await request.formData();
-          const file = formData.get("file") as File | null;
-
-          if (!file) {
-            return json({ ok: false, error: "No file uploaded" }, 400);
-          }
-
-          const ext = file.name.split(".").pop() || "jpg";
-          const safeName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
-
-          await bucket.put(safeName, file.stream(), {
-            httpMetadata: {
-              contentType: file.type || "image/jpeg",
-            },
-          });
-
           return json({
-            ok: true,
-            url: `/api/image/${safeName}`,
-          });
+            ok: false,
+            error:
+              "Image upload via R2 is not supported in this Lovable/TanStack setup. Use direct image URLs or static assets instead.",
+          }, 400);
         } catch (error: any) {
-          return json({ ok: false, error: error?.message || "Image upload failed" }, 500);
+          return json({ ok: false, error: error?.message || "Upload failed" }, 500);
         }
       },
     },
