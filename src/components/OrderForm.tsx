@@ -8,6 +8,7 @@ import {
   useOrderItems,
   type OrderItem,
 } from "@/lib/order-store";
+import { useSiteContent } from "@/hooks/useSiteContent";
 
 type Props = {
   heading?: string;
@@ -23,6 +24,9 @@ export function OrderForm({
   submitLabel = "Submit Order",
 }: Props) {
   const items = useOrderItems();
+  const content = useSiteContent();
+  const products = content?.menu ?? [];
+
   const [submitting, setSubmitting] = useState(false);
   const [agreed, setAgreed] = useState(false);
   const [form, setForm] = useState({
@@ -38,27 +42,43 @@ export function OrderForm({
     const next = items.map((it, i) => (i === idx ? { ...it, ...patch } : it));
     setOrderItems(next);
   }
+
   function removeItem(idx: number) {
     setOrderItems(items.filter((_, i) => i !== idx));
   }
+
   function addBlankItem() {
-    setOrderItems([...items, { name: "", quantity: 1 }]);
+    setOrderItems([
+      ...items,
+      {
+        name: products[0]?.name ?? "",
+        quantity: 1,
+      },
+    ]);
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
     if (!agreed) {
       toast.error("Please agree to the Terms & Conditions to continue.");
       return;
     }
+
     const cleanItems = items
-      .map((i) => ({ name: i.name.trim(), quantity: Number(i.quantity) || 1 }))
+      .map((i) => ({
+        name: i.name.trim(),
+        quantity: Number(i.quantity) || 1,
+      }))
       .filter((i) => i.name.length > 0);
+
     if (cleanItems.length === 0) {
       toast.error("Please add at least one product to your order.");
       return;
     }
+
     setSubmitting(true);
+
     try {
       const res = await fetch("/api/order", {
         method: "POST",
@@ -69,10 +89,12 @@ export function OrderForm({
           agreedToTerms: true,
         }),
       });
+
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
         throw new Error(data.error ?? "Submission failed");
       }
+
       toast.success("Order received! We'll be in touch shortly.");
       clearOrderItems();
       setAgreed(false);
@@ -99,25 +121,37 @@ export function OrderForm({
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center mb-8">
           <p className="script text-3xl text-chocolate-soft">order enquiry</p>
-          <h2 className="font-display text-3xl sm:text-4xl text-chocolate">{heading}</h2>
-          <p className="mt-3 text-chocolate-soft max-w-2xl mx-auto">{subtitle}</p>
+          <h2 className="font-display text-3xl sm:text-4xl text-chocolate">
+            {heading}
+          </h2>
+          <p className="mt-3 text-chocolate-soft max-w-2xl mx-auto">
+            {subtitle}
+          </p>
         </div>
+
         <form
           onSubmit={handleSubmit}
           className="rounded-3xl bg-card border border-border shadow-soft p-6 sm:p-8 grid gap-5"
         >
           <div className="grid gap-5 sm:grid-cols-2">
             <label className="block">
-              <span className="text-sm font-semibold text-chocolate">Customer name</span>
+              <span className="text-sm font-semibold text-chocolate">
+                Customer name
+              </span>
               <input
                 required
                 className={inputCls + " mt-1"}
                 value={form.customerName}
-                onChange={(e) => setForm({ ...form, customerName: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, customerName: e.target.value })
+                }
               />
             </label>
+
             <label className="block">
-              <span className="text-sm font-semibold text-chocolate">Phone number</span>
+              <span className="text-sm font-semibold text-chocolate">
+                Phone number
+              </span>
               <input
                 required
                 className={inputCls + " mt-1"}
@@ -125,8 +159,11 @@ export function OrderForm({
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
               />
             </label>
+
             <label className="block sm:col-span-2">
-              <span className="text-sm font-semibold text-chocolate">Email address</span>
+              <span className="text-sm font-semibold text-chocolate">
+                Email address
+              </span>
               <input
                 required
                 type="email"
@@ -135,34 +172,48 @@ export function OrderForm({
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
               />
             </label>
+
             <label className="block">
-              <span className="text-sm font-semibold text-chocolate">Pickup / Delivery</span>
+              <span className="text-sm font-semibold text-chocolate">
+                Pickup / Delivery
+              </span>
               <select
                 className={inputCls + " mt-1"}
                 value={form.fulfilment}
                 onChange={(e) =>
-                  setForm({ ...form, fulfilment: e.target.value as "Pickup" | "Delivery" })
+                  setForm({
+                    ...form,
+                    fulfilment: e.target.value as "Pickup" | "Delivery",
+                  })
                 }
               >
                 <option>Pickup</option>
                 <option>Delivery</option>
               </select>
             </label>
+
             <label className="block">
-              <span className="text-sm font-semibold text-chocolate">Date required</span>
+              <span className="text-sm font-semibold text-chocolate">
+                Date required
+              </span>
               <input
                 required
                 type="date"
                 className={inputCls + " mt-1"}
                 value={form.dateRequired}
-                onChange={(e) => setForm({ ...form, dateRequired: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, dateRequired: e.target.value })
+                }
               />
             </label>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold text-chocolate">Products ordered</span>
+              <span className="text-sm font-semibold text-chocolate">
+                Products ordered
+              </span>
+
               <button
                 type="button"
                 onClick={addBlankItem}
@@ -171,29 +222,43 @@ export function OrderForm({
                 <Plus size={14} /> Add item
               </button>
             </div>
+
             {items.length === 0 && (
               <p className="text-sm text-chocolate-soft italic mb-2">
                 Click "Order" on any menu item above to add it, or add manually.
               </p>
             )}
+
             <div className="grid gap-2">
               {items.map((it, idx) => (
-                <div key={idx} className="flex gap-2 items-center">
-                  <input
-                    placeholder="Product name"
-                    className={inputCls + " flex-1"}
+                <div key={idx} className="grid gap-2 sm:grid-cols-[1fr_110px_48px] items-center">
+                  <select
+                    className={inputCls}
                     value={it.name}
                     onChange={(e) => updateItem(idx, { name: e.target.value })}
-                  />
+                  >
+                    <option value="">Select product</option>
+                    {products
+                      .filter((p) => p.available !== false)
+                      .map((p) => (
+                        <option key={p.id} value={p.name}>
+                          {p.name}
+                        </option>
+                      ))}
+                  </select>
+
                   <input
                     type="number"
                     min={1}
-                    className={inputCls + " w-24"}
+                    className={inputCls}
                     value={it.quantity}
                     onChange={(e) =>
-                      updateItem(idx, { quantity: Math.max(1, Number(e.target.value) || 1) })
+                      updateItem(idx, {
+                        quantity: Math.max(1, Number(e.target.value) || 1),
+                      })
                     }
                   />
+
                   <button
                     type="button"
                     onClick={() => removeItem(idx)}
@@ -208,7 +273,9 @@ export function OrderForm({
           </div>
 
           <label className="block">
-            <span className="text-sm font-semibold text-chocolate">Additional notes</span>
+            <span className="text-sm font-semibold text-chocolate">
+              Additional notes
+            </span>
             <textarea
               rows={4}
               className={inputCls + " mt-1"}
@@ -226,6 +293,7 @@ export function OrderForm({
               className="mt-1 h-4 w-4 accent-pink"
               required
             />
+
             <span>
               {termsLabel}{" "}
               <Link to="/policies" className="underline hover:text-pink">
