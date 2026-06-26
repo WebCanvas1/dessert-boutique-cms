@@ -45,16 +45,20 @@ const TABS: { id: Tab; label: string }[] = [
 
 function AdminPage() {
   const [authed, setAuthed] = useState<boolean | null>(null);
+
   useEffect(() => {
     fetch("/api/admin/status")
       .then((r) => r.json())
       .then((d: { isAdmin: boolean }) => setAuthed(d.isAdmin))
       .catch(() => setAuthed(false));
   }, []);
+
   if (authed === null) {
     return <div className="min-h-[60vh] flex items-center justify-center">Loading…</div>;
   }
+
   if (!authed) return <LoginScreen onSuccess={() => setAuthed(true)} />;
+
   return <Dashboard onLogout={() => setAuthed(false)} />;
 }
 
@@ -62,17 +66,22 @@ function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
   const [u, setU] = useState("");
   const [p, setP] = useState("");
   const [busy, setBusy] = useState(false);
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
+
     try {
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ username: u, password: p }),
       });
+
       const data = (await res.json()) as { ok: boolean; error?: string };
+
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Login failed");
+
       onSuccess();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Login failed");
@@ -80,13 +89,17 @@ function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
       setBusy(false);
     }
   }
+
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4">
       <form
         onSubmit={submit}
         className="w-full max-w-sm rounded-3xl bg-card border border-border shadow-soft p-8 grid gap-4"
       >
-        <h1 className="font-display text-2xl text-chocolate text-center">Admin Login</h1>
+        <h1 className="font-display text-2xl text-chocolate text-center">
+          Admin Login
+        </h1>
+
         <input
           required
           placeholder="Username"
@@ -94,6 +107,7 @@ function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
           value={u}
           onChange={(e) => setU(e.target.value)}
         />
+
         <input
           required
           type="password"
@@ -102,6 +116,7 @@ function LoginScreen({ onSuccess }: { onSuccess: () => void }) {
           value={p}
           onChange={(e) => setP(e.target.value)}
         />
+
         <button
           disabled={busy}
           className="rounded-full bg-chocolate-soft text-cream px-6 py-3 font-semibold hover:bg-chocolate transition disabled:opacity-60"
@@ -120,7 +135,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("branding");
 
   useEffect(() => {
-    fetch("/api/content")
+    fetch("/api/content", { cache: "no-store" })
       .then((r) => r.json())
       .then((d: SiteContent) => setContent(d))
       .catch(() => toast.error("Failed to load content"));
@@ -134,14 +149,18 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 
   async function save() {
     if (!content) return;
+
     setSaving(true);
+
     try {
       const res = await fetch("/api/content", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(content),
       });
+
       if (!res.ok) throw new Error("Save failed");
+
       toast.success("Saved");
       setDirty(false);
     } catch (err) {
@@ -163,7 +182,10 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-        <h1 className="font-display text-3xl text-chocolate">Admin Dashboard</h1>
+        <h1 className="font-display text-3xl text-chocolate">
+          Admin Dashboard
+        </h1>
+
         <div className="flex gap-2">
           <button
             onClick={save}
@@ -172,6 +194,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           >
             {saving ? "Saving…" : dirty ? "Save changes" : "Saved"}
           </button>
+
           <button
             onClick={logout}
             className="rounded-full bg-cream text-chocolate border border-border px-4 py-2 font-semibold inline-flex items-center gap-2"
@@ -210,6 +233,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             ]}
           />
         )}
+
         {tab === "hero" && (
           <Fields
             obj={content.hero}
@@ -224,6 +248,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             ]}
           />
         )}
+
         {tab === "about" && (
           <Fields
             obj={content.about}
@@ -237,9 +262,11 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             ]}
           />
         )}
+
         {tab === "menu" && (
           <MenuEditor items={content.menu} onChange={(v) => update("menu", v)} />
         )}
+
         {tab === "gallery" && (
           <ListEditor
             items={content.gallery}
@@ -252,6 +279,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             title="Gallery"
           />
         )}
+
         {tab === "reviews" && (
           <ListEditor
             items={content.reviews}
@@ -265,6 +293,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             title="Reviews"
           />
         )}
+
         {tab === "contact" && (
           <Fields
             obj={content.contact}
@@ -278,6 +307,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             ]}
           />
         )}
+
         {tab === "whatsapp" && (
           <Fields
             obj={content.whatsapp}
@@ -288,6 +318,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             ]}
           />
         )}
+
         {tab === "social" && (
           <Fields
             obj={content.social}
@@ -300,6 +331,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             ]}
           />
         )}
+
         {tab === "faq" && (
           <ListEditor
             items={content.faqs}
@@ -312,6 +344,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             title="FAQs"
           />
         )}
+
         {tab === "policies" && (
           <ListEditor
             items={content.policies}
@@ -325,6 +358,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
             title="Policies"
           />
         )}
+
         {tab === "orderForm" && (
           <Fields
             obj={content.orderForm}
@@ -343,8 +377,6 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-
 type FieldKind = "text" | "textarea" | "number" | "checkbox";
 
 function Fields<T extends Record<string, unknown>>({
@@ -359,11 +391,13 @@ function Fields<T extends Record<string, unknown>>({
   function set(k: keyof T, v: unknown) {
     onChange({ ...obj, [k]: v });
   }
+
   return (
     <div className="grid gap-4">
       {schema.map(([key, label, kind]) => (
         <label key={key} className="block">
           <span className="text-sm font-semibold text-chocolate">{label}</span>
+
           {kind === "textarea" ? (
             <textarea
               rows={3}
@@ -372,12 +406,14 @@ function Fields<T extends Record<string, unknown>>({
               onChange={(e) => set(key, e.target.value)}
             />
           ) : kind === "checkbox" ? (
-            <input
-              type="checkbox"
-              className="ml-2 align-middle"
-              checked={Boolean(obj[key])}
-              onChange={(e) => set(key, e.target.checked)}
-            />
+            <div className="mt-2">
+              <input
+                type="checkbox"
+                className="h-5 w-5 accent-pink"
+                checked={Boolean(obj[key])}
+                onChange={(e) => set(key, e.target.checked)}
+              />
+            </div>
           ) : kind === "number" ? (
             <input
               type="number"
@@ -416,20 +452,25 @@ function ListEditor<T extends Record<string, unknown>>({
     next[i] = { ...next[i], [k]: v };
     onChange(next);
   }
+
   function remove(i: number) {
     onChange(items.filter((_, idx) => idx !== i));
   }
+
   function move(i: number, dir: -1 | 1) {
     const j = i + dir;
     if (j < 0 || j >= items.length) return;
+
     const next = [...items];
     [next[i], next[j]] = [next[j], next[i]];
     onChange(next);
   }
+
   return (
     <div className="grid gap-4">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-xl text-chocolate">{title}</h2>
+
         <button
           type="button"
           onClick={() => onChange([...items, blank()])}
@@ -438,26 +479,38 @@ function ListEditor<T extends Record<string, unknown>>({
           <Plus size={14} /> Add
         </button>
       </div>
+
       {items.map((item, i) => (
-        <div key={i} className="rounded-2xl border border-border p-4 bg-cream/40 grid gap-3">
+        <div
+          key={i}
+          className="rounded-2xl border border-border p-4 bg-cream/40 grid gap-3"
+        >
           <div className="flex justify-between items-center">
-            <span className="text-xs text-chocolate-soft font-semibold">#{i + 1}</span>
+            <span className="text-xs text-chocolate-soft font-semibold">
+              #{i + 1}
+            </span>
+
             <div className="flex gap-1">
               <IconBtn onClick={() => move(i, -1)} aria="Move up">
                 <ArrowUp size={14} />
               </IconBtn>
+
               <IconBtn onClick={() => move(i, 1)} aria="Move down">
                 <ArrowDown size={14} />
               </IconBtn>
+
               <IconBtn onClick={() => remove(i)} aria="Delete" danger>
                 <Trash2 size={14} />
               </IconBtn>
             </div>
           </div>
+
           {fields.map(([k, label, kind]) =>
             kind === "textarea" ? (
               <label key={k} className="block">
-                <span className="text-xs font-semibold text-chocolate">{label}</span>
+                <span className="text-xs font-semibold text-chocolate">
+                  {label}
+                </span>
                 <textarea
                   rows={2}
                   className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2"
@@ -465,15 +518,35 @@ function ListEditor<T extends Record<string, unknown>>({
                   onChange={(e) => update(i, k, e.target.value)}
                 />
               </label>
+            ) : kind === "checkbox" ? (
+              <label key={k} className="block">
+                <span className="text-xs font-semibold text-chocolate">
+                  {label}
+                </span>
+                <div className="mt-2">
+                  <input
+                    type="checkbox"
+                    className="h-5 w-5 accent-pink"
+                    checked={Boolean(item[k])}
+                    onChange={(e) => update(i, k, e.target.checked)}
+                  />
+                </div>
+              </label>
             ) : (
               <label key={k} className="block">
-                <span className="text-xs font-semibold text-chocolate">{label}</span>
+                <span className="text-xs font-semibold text-chocolate">
+                  {label}
+                </span>
                 <input
                   type={kind === "number" ? "number" : "text"}
                   className="mt-1 w-full rounded-lg border border-border bg-card px-3 py-2"
                   value={String(item[k] ?? "")}
                   onChange={(e) =>
-                    update(i, k, kind === "number" ? Number(e.target.value) : e.target.value)
+                    update(
+                      i,
+                      k,
+                      kind === "number" ? Number(e.target.value) : e.target.value,
+                    )
                   }
                 />
               </label>
@@ -514,7 +587,7 @@ function MenuEditor({
         ["price", "Price", "text"],
         ["category", "Category", "text"],
         ["image", "Image URL", "text"],
-        ["available", "Available (true/false)", "text"],
+        ["available", "Available", "checkbox"],
       ]}
     />
   );
