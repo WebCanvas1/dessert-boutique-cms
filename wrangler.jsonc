@@ -15,8 +15,8 @@
   // ──────────────────────────────────────────────────────────────────────────
   "kv_namespaces": [
     {
-      "binding": "SITE_CONTENT",
-      "id": "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
+      "binding": "dessert-boutique-content",
+      "id": "dbf9a4dd81184342a74adc71f0324dfc"
     }
   ],
 
