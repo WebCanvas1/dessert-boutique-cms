@@ -649,8 +649,8 @@ function MenuEditor({
   );
 }
 async function uploadImage(file: File): Promise<string> {
-  const maxWidth = 400;
-  const quality = 0.40;
+  const maxWidth = 350;
+  const quality = 0.35;
 
   const imageUrl = URL.createObjectURL(file);
 
@@ -670,11 +670,14 @@ async function uploadImage(file: File): Promise<string> {
     canvas.width = width;
     canvas.height = height;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: false });
+
     if (!ctx) {
       throw new Error("Could not process image");
     }
 
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
     ctx.drawImage(img, 0, 0, width, height);
 
     return canvas.toDataURL("image/jpeg", quality);
