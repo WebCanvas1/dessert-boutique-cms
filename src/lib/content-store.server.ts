@@ -2,15 +2,26 @@ import { defaultContent, type SiteContent } from "./site-content";
 
 const KV_KEY = "site";
 
-export type KVNamespace = {
+type KVNamespace = {
   get: (key: string, type?: "text" | "json") => Promise<string | null | unknown>;
   put: (key: string, value: string) => Promise<void>;
 };
 
 let cache: SiteContent | null = null;
 
-export async function readContent(kv?: KVNamespace | null): Promise<SiteContent> {
+async function getKV(): Promise<KVNamespace | null> {
+  try {
+    const { env } = await import("cloudflare:workers");
+    return (env.SITE_CONTENT as KVNamespace | undefined) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function readContent(): Promise<SiteContent> {
   if (cache) return cache;
+
+  const kv = await getKV();
 
   if (kv) {
     const raw = (await kv.get(KV_KEY, "text")) as string | null;
@@ -26,11 +37,10 @@ export async function readContent(kv?: KVNamespace | null): Promise<SiteContent>
   return cache;
 }
 
-export async function writeContent(
-  next: SiteContent,
-  kv?: KVNamespace | null,
-): Promise<void> {
+export async function writeContent(next: SiteContent): Promise<void> {
   cache = next;
+
+  const kv = await getKV();
 
   if (!kv) {
     throw new Error("SITE_CONTENT KV is not configured");
