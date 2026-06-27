@@ -10,14 +10,21 @@ type KVNamespace = {
 function getKV(): KVNamespace | null {
   const g = globalThis as any;
 
+  console.log("GLOBAL KEYS", Object.keys(g));
+  console.log("__CF_ENV__", g.__CF_ENV__);
+  console.log("SITE_CONTENT", g.SITE_CONTENT);
+
   const kv =
-    g.__CF_ENV__?.SITE_CONTENT ||
-    g.SITE_CONTENT ||
+    g.__CF_ENV__?.SITE_CONTENT ??
+    g.SITE_CONTENT ??
     null;
 
-  if (kv && typeof kv.get === "function" && typeof kv.put === "function") {
+  if (kv) {
+    console.log("KV FOUND");
     return kv;
   }
+
+  console.log("KV NOT FOUND");
 
   return null;
 }
