@@ -650,21 +650,38 @@ function MenuEditor({
   );
 }
 async function uploadImage(file: File): Promise<string> {
-  const formData = new FormData();
-  formData.append("file", file);
+  const maxWidth = 900;
+  const quality = 0.75;
 
-  const res = await fetch("/api/upload", {
-    method: "POST",
-    body: formData,
-  });
+  const imageUrl = URL.createObjectURL(file);
 
-  const data = await res.json();
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = imageUrl;
+    });
 
-  if (!res.ok || !data.url) {
-    throw new Error(data.error || "Image upload failed");
+    const scale = Math.min(1, maxWidth / img.width);
+    const width = Math.round(img.width * scale);
+    const height = Math.round(img.height * scale);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error("Could not process image");
+    }
+
+    ctx.drawImage(img, 0, 0, width, height);
+
+    return canvas.toDataURL("image/jpeg", quality);
+  } finally {
+    URL.revokeObjectURL(imageUrl);
   }
-
-  return data.url;
 }
 function IconBtn({
   children,
