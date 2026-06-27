@@ -47,15 +47,20 @@ export function clearOrderItems() {
 
 export function useOrderItems(): OrderItem[] {
   const [items, setItems] = useState<OrderItem[]>([]);
+
   useEffect(() => {
-    setItems(read());
+    clearOrderItems();
+
     const handler = () => setItems(read());
+
     window.addEventListener(EVENT, handler);
     window.addEventListener("storage", handler);
+
     return () => {
       window.removeEventListener(EVENT, handler);
       window.removeEventListener("storage", handler);
     };
   }, []);
+
   return items;
 }
