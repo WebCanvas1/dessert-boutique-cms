@@ -649,8 +649,8 @@ function MenuEditor({
   );
 }
 async function uploadImage(file: File): Promise<string> {
-  const maxWidth = 900;
-  const quality = 0.75;
+  const maxWidth = 400;
+  const quality = 0.40;
 
   const imageUrl = URL.createObjectURL(file);
 
