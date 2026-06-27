@@ -148,32 +148,31 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   }
 
   async function save() {
-    if (!content) return;
+  if (!content) return;
 
-    setSaving(true);
+  setSaving(true);
 
-    try {
-      const res = await fetch("/api/content", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(content),
-      });
+  try {
+    const res = await fetch("/api/content", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(content),
+    });
 
-      if (!res.ok) throw new Error("Save failed");
+    const data = await res.json().catch(() => null);
 
-const fresh = await fetch("/api/content", { cache: "no-store" }).then((r) =>
-  r.json(),
-);
-
-setContent(fresh);
-toast.success("Saved");
-setDirty(false);
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Save failed");
-    } finally {
-      setSaving(false);
+    if (!res.ok || data?.ok === false) {
+      throw new Error(data?.error || "Save failed");
     }
+
+    toast.success("Saved");
+    setDirty(false);
+  } catch (err) {
+    toast.error(err instanceof Error ? err.message : "Save failed");
+  } finally {
+    setSaving(false);
   }
+}
 
   async function logout() {
     await fetch("/api/admin/logout", { method: "POST" });
